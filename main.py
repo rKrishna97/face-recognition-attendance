@@ -17,7 +17,7 @@ if ch == 1:
     # user_presence = check_if_student_is_present(student_name='Elon_Musk') 
     
 elif ch == 2:
-    print("Opening Webcam")
+    print("Opening Webcam") # IN PROGRESS
 
 elif ch == 3:
     _ = take_attendance()
