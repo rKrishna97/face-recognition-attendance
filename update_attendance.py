@@ -1,16 +1,13 @@
 from datetime import datetime
 from add_to_mongodb import get_student_list
-import pandas as pd 
-import os 
+import pandas as pd
+import os
 
 
 def update_attendance(person_name):
-    today = datetime.today().strftime('%d-%m-%Y')
+    today = datetime.today().strftime("%d-%m-%Y")
 
     students = sorted(get_student_list())
-
-
-
 
     filename = "Attendance.csv"
     # header = ["Name", today]
@@ -24,40 +21,33 @@ def update_attendance(person_name):
 
     print(entry_dict)
 
-        
     if not os.path.exists(filename):
         entry = []
         name = []
-        for key,value in entry_dict.items():
+        for key, value in entry_dict.items():
             name.append(key)
             entry.append(value)
-        csv_file = pd.DataFrame({
-            "Name":name,
-            today: entry
-        })
-        csv_file.to_csv(filename,sep=",", index=False)
+        csv_file = pd.DataFrame({"Name": name, today: entry})
+        csv_file.to_csv(filename, sep=",", index=False)
     else:
         entry = []
         name = []
-        for key,value in entry_dict.items():
+        for key, value in entry_dict.items():
             name.append(key)
             entry.append(value)
-        df = pd.read_csv('Attendance.csv')
-        
+        df = pd.read_csv("Attendance.csv")
+
         new_names = []
         for i in students:
-            if i not in list(df['Name']):
+            if i not in list(df["Name"]):
                 new_names.append(i)
-        
-        
+
         if len(new_names) != 0:
             for i in new_names:
                 df.loc[len(df)] = 0
                 df["Name"].iloc[-1] = i
 
-        
         print(df)
-
 
         if today not in df.columns:
             df[today] = 0
@@ -65,24 +55,8 @@ def update_attendance(person_name):
             print()
             print(df)
         elif today in df.columns:
-            df.loc[df['Name'] == person_name, today] = 1 
+            df.loc[df["Name"] == person_name, today] = 1
 
-        
-
-        
-        df.to_csv(filename,index=False)
+        df.to_csv(filename, index=False)
 
     return True
-
-
-
-
-
-
-    
-
-
-
-
-
-

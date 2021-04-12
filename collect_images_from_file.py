@@ -6,20 +6,21 @@ from add_to_mongodb import get_student_list
 
 student_list = get_student_list()
 
+
 def collect_face_encode():
     # Getting names of the person
     image_path = "./Images/"
-    all_names = [i for i in os.listdir(image_path) if os.path.isdir(os.path.join(image_path, i)) ]
+    all_names = [
+        i for i in os.listdir(image_path) if os.path.isdir(os.path.join(image_path, i))
+    ]
     # print(names)
 
-
     names = [i for i in all_names if i not in student_list]
-
 
     person_dict = {}
     for i in names:
         lis = []
-        for root,dirs,files in os.walk(f"./Images/{i}/", topdown=False):
+        for root, dirs, files in os.walk(f"./Images/{i}/", topdown=False):
             for name in files:
                 lis.append(os.path.join(root, name))
         person_dict[i] = lis
@@ -32,13 +33,10 @@ def collect_face_encode():
     #         print(f)
     #     print()
 
-
-
     person_dict_encode = {}
     for name in names:
         lisEncode = []
         for f in person_dict[name]:
-            
 
             try:
                 print(f)
@@ -56,24 +54,21 @@ def collect_face_encode():
                 # cv2.imshow(f"{name} {img.shape[:2]}", img)
                 # cv2.waitKey(0)
                 # cv2.destroyAllWindows()
-                
+
             except:
-                print('Fail to detect face. Moving file to junk Folder')
+                print("Fail to detect face. Moving file to junk Folder")
                 junk_file = os.path.basename(f)
                 print(f"{junk_file}")
 
                 if not os.path.exists(f"./Junk/{name}"):
                     os.makedirs(f"./Junk/{name}")
-                shutil.move(f"./Images/{name}/{junk_file}", f"./Junk/{name}/{junk_file}")
+                shutil.move(
+                    f"./Images/{name}/{junk_file}", f"./Junk/{name}/{junk_file}"
+                )
                 print()
-                
+
                 pass
 
         person_dict_encode[name] = lisEncode
-        
+
     return person_dict_encode
-
-            
-
-
-
